@@ -1,0 +1,54 @@
+{
+	"name": "Ingerir Empresas",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "csv_empresas",
+						"type": "DatasetReference"
+					},
+					"name": "EmpresasCSV",
+					"description": "Leitura do csv de empresas"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "parquet_empresas",
+						"type": "DatasetReference"
+					},
+					"name": "EmpresasParquet",
+					"description": "Escrita do parquet"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          CnpjBasico as integer '##0',",
+				"          RazaoSocial as string,",
+				"          CodNaturezaJuridica as integer '##0',",
+				"          CodQualificacaoResponsavel as integer '##0',",
+				"          CapitalSocial as decimal(10,0) '000,000,000.000',",
+				"          CodPorteEmpresa as integer '000',",
+				"          EnteFederativoResponsavel as string",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: true,",
+				"     ignoreNoFilesFound: false,",
+				"     preferredIntegralType: 'integer',",
+				"     preferredFractionalType: 'decimal',",
+				"     booleanFormat: ['T', 'F']) ~> EmpresasCSV",
+				"EmpresasCSV sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> EmpresasParquet"
+			]
+		}
+	}
+}

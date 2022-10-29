@@ -1,0 +1,21 @@
+{
+	"name": "parquet_empresas",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLS asaprotdatalake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "empresas.parquet",
+				"folderPath": "processed/receita-federal-dados-publicos-cnpj/empresas",
+				"fileSystem": "raw"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
