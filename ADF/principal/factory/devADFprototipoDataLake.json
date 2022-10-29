@@ -1,0 +1,9 @@
+{
+	"name": "devADFprototipoDataLake",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "adf658d8-e401-4201-815d-ecf687a6303f",
+		"tenantId": "193cc83a-b28e-4bd0-beb9-2b4b049dc81d"
+	}
+}
