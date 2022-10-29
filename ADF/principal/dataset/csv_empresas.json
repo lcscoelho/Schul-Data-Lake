@@ -1,0 +1,46 @@
+{
+	"name": "csv_empresas",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLS asaprotdatalake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "part-00000-58983ad4-8444-4405-aec6-9cd3e5413d1b-c000.csv",
+				"folderPath": "landing/receita-federal-dados-publicos-cnpj/empresas",
+				"fileSystem": "raw"
+			},
+			"columnDelimiter": ";",
+			"escapeChar": "\\",
+			"nullValue": "\"\"",
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			}
+		]
+	}
+}
