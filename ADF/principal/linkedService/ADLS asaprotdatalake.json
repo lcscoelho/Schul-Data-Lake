@@ -1,0 +1,14 @@
+{
+	"name": "ADLS asaprotdatalake",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://asaprotdatalake.dfs.core.windows.net/"
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntimedev",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
