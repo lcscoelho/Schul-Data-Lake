@@ -3,7 +3,7 @@
 	"properties": {
 		"description": "Gatilho que dispara o processamento do arquivo inserido no landing na pasta empresas.",
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
