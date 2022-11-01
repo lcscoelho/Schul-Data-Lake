@@ -4,14 +4,7 @@
 		"description": "Gatilho que dispara o processamento do arquivo inserido no landing na pasta empresas.",
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [
-			{
-				"pipelineReference": {
-					"referenceName": "Processar Empresas",
-					"type": "PipelineReference"
-				}
-			}
-		],
+		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/raw/blobs/landing/receita-federal-dados-publicos-cnpj/empresas",
