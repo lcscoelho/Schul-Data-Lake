@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "empresas_processed.parquet",
 				"folderPath": "processed/receita-federal-dados-publicos-cnpj/empresas",
 				"fileSystem": "raw"
 			},
