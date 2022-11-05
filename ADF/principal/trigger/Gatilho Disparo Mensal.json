@@ -1,0 +1,30 @@
+{
+	"name": "Gatilho Disparo Mensal",
+	"properties": {
+		"description": "Gatilho agendado para buscar os arquivos no landing uma vez por mês.",
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Processar Empresas",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Month",
+				"interval": 1,
+				"startTime": "2022-11-30T23:59:00Z",
+				"timeZone": "UTC",
+				"schedule": {
+					"monthDays": [
+						-1
+					]
+				}
+			}
+		}
+	}
+}
