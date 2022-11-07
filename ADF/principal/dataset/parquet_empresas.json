@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "empresas_processed.parquet",
-				"folderPath": "processed/receita-federal-dados-publicos-cnpj/empresas",
+				"folderPath": "conformance/transactional/receita-federal-dados-publicos-cnpj/empresas/full/input",
 				"fileSystem": "raw"
 			},
 			"compressionCodec": "snappy"
