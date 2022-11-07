@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "part-00000-58983ad4-8444-4405-aec6-9cd3e5413d1b-c000.csv",
-				"folderPath": "landing/receita-federal-dados-publicos-cnpj/empresas",
+				"folderPath": "landing/transactional/receita-federal-dados-publicos-cnpj/empresas/full",
 				"fileSystem": "raw"
 			},
 			"columnDelimiter": ";",
