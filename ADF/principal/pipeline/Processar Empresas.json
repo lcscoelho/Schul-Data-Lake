@@ -20,6 +20,11 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": false,
+							"wildcardFolderPath": "landing/transactional/fonte=receita_federal/entidade=*/*",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.nome_arquivo",
+								"type": "Expression"
+							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
