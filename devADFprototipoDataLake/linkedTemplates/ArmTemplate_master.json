@@ -11,6 +11,14 @@
 			"type": "string",
 			"defaultValue": "https://asaprotdatalake.dfs.core.windows.net/"
 		},
+		"Gatilho Ingerir Landing Receita Federal Empresas_properties_Processar Empresas_parameters_nome_arquivo": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"Gatilho Ingerir Landing Receita Federal Empresas_properties_Processar Empresas_parameters_caminho_diretorio": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
 		"Gatilho Ingerir Landing Receita Federal Empresas_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/e3546c66-5e96-4a27-a3df-9c142cb116ab/resourceGroups/DATAEng-ProtipoDataLake/providers/Microsoft.Storage/storageAccounts/asaprotdatalake"
@@ -44,6 +52,12 @@
 					},
 					"ADLS asaprotdatalake_properties_typeProperties_url": {
 						"value": "[parameters('ADLS asaprotdatalake_properties_typeProperties_url')]"
+					},
+					"Gatilho Ingerir Landing Receita Federal Empresas_properties_Processar Empresas_parameters_nome_arquivo": {
+						"value": "[parameters('Gatilho Ingerir Landing Receita Federal Empresas_properties_Processar Empresas_parameters_nome_arquivo')]"
+					},
+					"Gatilho Ingerir Landing Receita Federal Empresas_properties_Processar Empresas_parameters_caminho_diretorio": {
+						"value": "[parameters('Gatilho Ingerir Landing Receita Federal Empresas_properties_Processar Empresas_parameters_caminho_diretorio')]"
 					},
 					"Gatilho Ingerir Landing Receita Federal Empresas_properties_typeProperties_scope": {
 						"value": "[parameters('Gatilho Ingerir Landing Receita Federal Empresas_properties_typeProperties_scope')]"

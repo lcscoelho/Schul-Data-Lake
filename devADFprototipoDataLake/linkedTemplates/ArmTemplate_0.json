@@ -11,6 +11,14 @@
 			"type": "string",
 			"defaultValue": "https://asaprotdatalake.dfs.core.windows.net/"
 		},
+		"Gatilho Ingerir Landing Receita Federal Empresas_properties_Processar Empresas_parameters_nome_arquivo": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"Gatilho Ingerir Landing Receita Federal Empresas_properties_Processar Empresas_parameters_caminho_diretorio": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
 		"Gatilho Ingerir Landing Receita Federal Empresas_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/e3546c66-5e96-4a27-a3df-9c142cb116ab/resourceGroups/DATAEng-ProtipoDataLake/providers/Microsoft.Storage/storageAccounts/asaprotdatalake"
@@ -190,6 +198,11 @@
 								"storeSettings": {
 									"type": "AzureBlobFSReadSettings",
 									"recursive": false,
+									"wildcardFolderPath": "landing/transactional/fonte=receita_federal/entidade=*/*",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.nome_arquivo",
+										"type": "Expression"
+									},
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -221,7 +234,7 @@
 										"referenceName": "ADLS asaprotdatalake",
 										"type": "LinkedServiceReference"
 									},
-									"path": "raw/conformance/log"
+									"path": "raw/conformance/log/Processar Empresas"
 								}
 							},
 							"dataIntegrationUnits": 2,
@@ -326,6 +339,14 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
+				"parameters": {
+					"nome_arquivo": {
+						"type": "string"
+					},
+					"caminho_diretorio": {
+						"type": "string"
+					}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -347,7 +368,10 @@
 							"referenceName": "Processar Empresas",
 							"type": "PipelineReference"
 						},
-						"parameters": {}
+						"parameters": {
+							"nome_arquivo": "[parameters('Gatilho Ingerir Landing Receita Federal Empresas_properties_Processar Empresas_parameters_nome_arquivo')]",
+							"caminho_diretorio": "[parameters('Gatilho Ingerir Landing Receita Federal Empresas_properties_Processar Empresas_parameters_caminho_diretorio')]"
+						}
 					}
 				],
 				"type": "BlobEventsTrigger",
