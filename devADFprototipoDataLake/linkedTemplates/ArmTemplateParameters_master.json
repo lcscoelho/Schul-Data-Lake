@@ -8,6 +8,9 @@
 		"ADLS asaprotdatalake_properties_typeProperties_url": {
 			"value": "https://asaprotdatalake.dfs.core.windows.net/"
 		},
+		"Gatilho Ingerir Landing Receita Federal Empresas_properties_typeProperties_scope": {
+			"value": "/subscriptions/e3546c66-5e96-4a27-a3df-9c142cb116ab/resourceGroups/DATAEng-ProtipoDataLake/providers/Microsoft.Storage/storageAccounts/asaprotdatalake"
+		},
 		"containerUri": {
 			"value": ""
 		},

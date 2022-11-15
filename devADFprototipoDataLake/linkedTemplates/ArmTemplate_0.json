@@ -10,12 +10,42 @@
 		"ADLS asaprotdatalake_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://asaprotdatalake.dfs.core.windows.net/"
+		},
+		"Gatilho Ingerir Landing Receita Federal Empresas_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/e3546c66-5e96-4a27-a3df-9c142cb116ab/resourceGroups/DATAEng-ProtipoDataLake/providers/Microsoft.Storage/storageAccounts/asaprotdatalake"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Gatilho Disparo Mensal')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Gatilho agendado para buscar os arquivos no landing uma vez por mês.",
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Month",
+						"interval": 1,
+						"startTime": "2022-11-30T23:59:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"monthDays": [
+								-1
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/integrationRuntimedev')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
@@ -57,7 +87,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/csv_empresas')]",
+			"name": "[concat(parameters('factoryName'), '/landing_empresas')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -71,7 +101,7 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileName": "part-00000-58983ad4-8444-4405-aec6-9cd3e5413d1b-c000.csv",
-						"folderPath": "landing/receita-federal-dados-publicos-cnpj/empresas",
+						"folderPath": "landing/transactional/fonte=receita_federal/entidade=dados_publicos_cnpj_empresas/full",
 						"fileSystem": "raw"
 					},
 					"columnDelimiter": ";",
@@ -108,7 +138,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/parquet_empresas')]",
+			"name": "[concat(parameters('factoryName'), '/input_conformance_empresas')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -121,8 +151,11 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "empresas_processed.parquet",
-						"folderPath": "processed/receita-federal-dados-publicos-cnpj/empresas",
+						"fileName": {
+							"value": "@concat(\n    'runtime=', \n    string( formatDateTime( addHours(utcNow(), -3), 'yyyyMMdd_HHmm' ) )\n    )",
+							"type": "Expression"
+						},
+						"folderPath": "conformance/transactional/fonte=receita_federal/entidade=dados_publicos_cnpj_empresas/full/input",
 						"fileSystem": "raw"
 					},
 					"compressionCodec": "snappy"
@@ -157,8 +190,6 @@
 								"storeSettings": {
 									"type": "AzureBlobFSReadSettings",
 									"recursive": false,
-									"wildcardFolderPath": "landing/receita-federal-dados-publicos-cnpj/empresas",
-									"wildcardFileName": "*",
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -169,15 +200,105 @@
 								"type": "ParquetSink",
 								"storeSettings": {
 									"type": "AzureBlobFSWriteSettings",
-									"copyBehavior": "MergeFiles"
+									"copyBehavior": "MergeFiles",
+									"blockSizeInMB": 64
 								},
 								"formatSettings": {
 									"type": "ParquetWriteSettings"
 								}
 							},
 							"enableStaging": false,
+							"parallelCopies": 1,
+							"validateDataConsistency": true,
+							"logSettings": {
+								"enableCopyActivityLog": true,
+								"copyActivityLogSettings": {
+									"logLevel": "Info",
+									"enableReliableLogging": true
+								},
+								"logLocationSettings": {
+									"linkedServiceName": {
+										"referenceName": "ADLS asaprotdatalake",
+										"type": "LinkedServiceReference"
+									},
+									"path": "raw/conformance/log"
+								}
+							},
+							"dataIntegrationUnits": 2,
 							"translator": {
 								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 1
+										},
+										"sink": {
+											"name": "CnpjBasico",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 2
+										},
+										"sink": {
+											"name": "RazaoSocial",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 3
+										},
+										"sink": {
+											"name": "NaturezaJuridica",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 4
+										},
+										"sink": {
+											"name": "QualificacaoResponsavel",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 5
+										},
+										"sink": {
+											"name": "CapitalSocial",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 6
+										},
+										"sink": {
+											"name": "PorteEmpresa",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"type": "String",
+											"ordinal": 7
+										},
+										"sink": {
+											"name": "EnteFederativoResponsavel",
+											"physicalType": "UTF8"
+										}
+									}
+								],
 								"typeConversion": true,
 								"typeConversionSettings": {
 									"allowDataTruncation": true,
@@ -187,14 +308,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "csv_empresas",
+								"referenceName": "landing_empresas",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "parquet_empresas",
+								"referenceName": "input_conformance_empresas",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -208,16 +329,16 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/csv_empresas')]",
-				"[concat(variables('factoryId'), '/datasets/parquet_empresas')]"
+				"[concat(variables('factoryId'), '/datasets/landing_empresas')]",
+				"[concat(variables('factoryId'), '/datasets/input_conformance_empresas')]",
+				"[concat(variables('factoryId'), '/linkedServices/ADLS asaprotdatalake')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Gatilho Disparo Mensal')]",
+			"name": "[concat(parameters('factoryName'), '/Gatilho Ingerir Landing Receita Federal Empresas')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Gatilho agendado para buscar os arquivos no landing uma vez por mês.",
 				"annotations": [],
 				"runtimeState": "Stopped",
 				"pipelines": [
@@ -229,19 +350,15 @@
 						"parameters": {}
 					}
 				],
-				"type": "ScheduleTrigger",
+				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"recurrence": {
-						"frequency": "Month",
-						"interval": 1,
-						"startTime": "2022-11-30T23:59:00Z",
-						"timeZone": "UTC",
-						"schedule": {
-							"monthDays": [
-								-1
-							]
-						}
-					}
+					"blobPathBeginsWith": "/raw/blobs/landing/transactional/fonte=receita_federal/entidade=dados_publicos_cnpj_empresas/full/",
+					"blobPathEndsWith": ".csv",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('Gatilho Ingerir Landing Receita Federal Empresas_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
 				}
 			},
 			"dependsOn": [
