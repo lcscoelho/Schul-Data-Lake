@@ -2,7 +2,7 @@
 	"name": "Gatilho Ingerir Landing Receita Federal Empresas",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipelines": [
 			{
 				"pipelineReference": {
