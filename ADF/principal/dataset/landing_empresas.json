@@ -1,5 +1,5 @@
 {
-	"name": "csv_empresas",
+	"name": "landing_empresas",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ADLS asaprotdatalake",
@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "part-00000-58983ad4-8444-4405-aec6-9cd3e5413d1b-c000.csv",
-				"folderPath": "landing/transactional/receita-federal-dados-publicos-cnpj/empresas/full",
+				"folderPath": "landing/transactional/fonte=receita_federal/entidade=dados_publicos_cnpj_empresas/full",
 				"fileSystem": "raw"
 			},
 			"columnDelimiter": ";",

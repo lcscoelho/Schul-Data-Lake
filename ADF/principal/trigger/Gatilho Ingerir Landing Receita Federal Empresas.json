@@ -1,0 +1,25 @@
+{
+	"name": "Gatilho Ingerir Landing Receita Federal Empresas",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Processar Empresas",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/raw/blobs/landing/transactional/fonte=receita_federal/entidade=dados_publicos_cnpj_empresas/full/",
+			"blobPathEndsWith": ".csv",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/e3546c66-5e96-4a27-a3df-9c142cb116ab/resourceGroups/DATAEng-ProtipoDataLake/providers/Microsoft.Storage/storageAccounts/asaprotdatalake",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}

@@ -20,8 +20,6 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": false,
-							"wildcardFolderPath": "landing/receita-federal-dados-publicos-cnpj/empresas",
-							"wildcardFileName": "*",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -32,13 +30,31 @@
 						"type": "ParquetSink",
 						"storeSettings": {
 							"type": "AzureBlobFSWriteSettings",
-							"copyBehavior": "MergeFiles"
+							"copyBehavior": "MergeFiles",
+							"blockSizeInMB": 64
 						},
 						"formatSettings": {
 							"type": "ParquetWriteSettings"
 						}
 					},
 					"enableStaging": false,
+					"parallelCopies": 1,
+					"validateDataConsistency": true,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Info",
+							"enableReliableLogging": true
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "ADLS asaprotdatalake",
+								"type": "LinkedServiceReference"
+							},
+							"path": "raw/conformance/log"
+						}
+					},
+					"dataIntegrationUnits": 2,
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -122,13 +138,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "csv_empresas",
+						"referenceName": "landing_empresas",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "parquet_empresas",
+						"referenceName": "input_conformance_empresas",
 						"type": "DatasetReference"
 					}
 				]

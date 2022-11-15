@@ -1,5 +1,5 @@
 {
-	"name": "parquet_empresas",
+	"name": "input_conformance_empresas",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ADLS asaprotdatalake",
@@ -10,8 +10,11 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "empresas_processed.parquet",
-				"folderPath": "conformance/transactional/receita-federal-dados-publicos-cnpj/empresas/full/input",
+				"fileName": {
+					"value": "@concat(\n    'runtime=', \n    string( formatDateTime( addHours(utcNow(), -3), 'yyyyMMdd_HHmm' ) )\n    )",
+					"type": "Expression"
+				},
+				"folderPath": "conformance/transactional/fonte=receita_federal/entidade=dados_publicos_cnpj_empresas/full/input",
 				"fileSystem": "raw"
 			},
 			"compressionCodec": "snappy"
