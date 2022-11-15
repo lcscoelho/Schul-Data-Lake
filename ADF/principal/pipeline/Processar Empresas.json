@@ -51,7 +51,7 @@
 								"referenceName": "ADLS asaprotdatalake",
 								"type": "LinkedServiceReference"
 							},
-							"path": "raw/conformance/log"
+							"path": "raw/conformance/log/Processar Empresas"
 						}
 					},
 					"dataIntegrationUnits": 2,
@@ -150,6 +150,14 @@
 				]
 			}
 		],
+		"parameters": {
+			"nome_arquivo": {
+				"type": "string"
+			},
+			"caminho_diretorio": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
